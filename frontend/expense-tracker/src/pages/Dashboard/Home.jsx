@@ -63,7 +63,7 @@ const Home = () => {
             value={addThousandsSeparator(
               dashboardData?.totalIncome || 0
             )}
-            color="bg-orange-500"
+            color="bg-red-500"
           />
           <InfoCard
             icon={<LuHandCoins />}
@@ -71,7 +71,7 @@ const Home = () => {
             value={addThousandsSeparator(
               dashboardData?.totalExpense || 0
             )}
-            color="bg-red-500"
+            color="bg-orange-500"
           />
           <RecentTransactions
             transactions={dashboardData?.recentTransactions || []}
