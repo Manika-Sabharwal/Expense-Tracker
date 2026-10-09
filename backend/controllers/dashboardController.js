@@ -106,7 +106,7 @@ exports.getDashboardData = async (req, res) => {
 
       totalIncome: totalIncome[0]?.total || 0,
 
-      totalExpenses: totalExpense[0]?.total || 0,
+      totalExpense: totalExpense[0]?.total || 0,
 
       last30DaysExpenses: {
         total: expensesLast30Days,
