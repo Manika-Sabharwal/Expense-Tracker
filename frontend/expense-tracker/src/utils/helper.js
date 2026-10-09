@@ -17,19 +17,17 @@ export const getInitials = (name) => {
 };
 
 export const addThousandsSeparator = (num) => {
-  if (num == null || isNaN(num)) return "";
+if (num == null || isNaN(num)) return "";
 
-  const [integerPart, fractionalPart] = num.toString().split(".");
+const [integerPart, fractionalPart] = num.toString().split(".");
 
-  const formattedInteger = integerPart.replace(
-    /\B(?=(\d{2})+(\d{3})$)/g,
-    ","
-  );
+const formattedInteger = Number(integerPart).toLocaleString("en-IN");
 
-  return fractionalPart
-    ? `${formattedInteger}.${fractionalPart}`
-    : formattedInteger;
+return fractionalPart
+? `${formattedInteger}.${fractionalPart}`
+: formattedInteger;
 };
+
 
 export const prepareExpenseBarChartData = (data = []) => {
   const chartData = data.map((item) => ({
