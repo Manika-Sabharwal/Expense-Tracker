@@ -21,6 +21,10 @@ app.use(
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Expense Tracker Backend is Running!");
+});
+
 connectDB();
 
 app.use("/api/v1/auth", authRoutes);
