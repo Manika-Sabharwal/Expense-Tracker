@@ -62,7 +62,7 @@ exports.downloadExpenseExcel = async (req, res) => {
 
     // Prepare data for Excel
     const data = expense.map((item) => ({
-      category: item.category,
+      Category: item.category,
       Amount: item.amount,
       Date: item.date,
     }));
@@ -72,9 +72,24 @@ exports.downloadExpenseExcel = async (req, res) => {
 
     xlsx.utils.book_append_sheet(wb, ws, "Expense");
 
-    xlsx.writeFile(wb, "expense_details.xlsx");
+    // Generate Excel file in memory
+    const buffer = xlsx.write(wb, {
+      type: "buffer",
+      bookType: "xlsx",
+    });
 
-    res.download("expense_details.xlsx");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=expense_details.xlsx"
+    );
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+
+    res.send(buffer);
+
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
