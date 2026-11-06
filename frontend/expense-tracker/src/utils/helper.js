@@ -1,4 +1,5 @@
 import moment from "moment";
+
 export const validateEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
@@ -18,17 +19,16 @@ export const getInitials = (name) => {
 };
 
 export const addThousandsSeparator = (num) => {
-if (num == null || isNaN(num)) return "";
+  if (num == null || isNaN(num)) return "";
 
-const [integerPart, fractionalPart] = num.toString().split(".");
+  const [integerPart, fractionalPart] = num.toString().split(".");
 
-const formattedInteger = Number(integerPart).toLocaleString("en-IN");
+  const formattedInteger = Number(integerPart).toLocaleString("en-IN");
 
-return fractionalPart
-? `${formattedInteger}.${fractionalPart}`
-: formattedInteger;
+  return fractionalPart
+    ? `${formattedInteger}.${fractionalPart}`
+    : formattedInteger;
 };
-
 
 export const prepareExpenseBarChartData = (data = []) => {
   const chartData = data.map((item) => ({
@@ -39,30 +39,52 @@ export const prepareExpenseBarChartData = (data = []) => {
   return chartData;
 };
 
-export const prepareIncomeBarChartData = (data = []) => {
-  const sortedData = [...data].sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
-  );
+export const prepareIncomeBarChartData = (transactions = []) => {
+  const groupedData = {};
 
-  const chartData = sortedData.map((item) => ({
-    month: moment(item?.date).format("Do MMM"),
-    amount: item?.amount,
-    source: item?.source,
-  }));
+  transactions.forEach((item) => {
+    const date = moment(item.date).format("DD MMM YYYY");
 
-  return chartData;
+    if (!groupedData[date]) {
+      groupedData[date] = 0;
+    }
+
+    groupedData[date] += Number(item.amount) || 0;
+  });
+
+  return Object.entries(groupedData)
+    .map(([date, amount]) => ({
+      date,
+      amount,
+    }))
+    .sort(
+      (a, b) =>
+        moment(a.date, "DD MMM YYYY").valueOf() -
+        moment(b.date, "DD MMM YYYY").valueOf(),
+    );
 };
 
-export const prepareExpenseLineChartData = (data = []) => {
-  const sortedData = [...data].sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
-  );
+export const prepareExpenseLineChartData = (transactions = []) => {
+  const groupedData = {};
 
-  const chartData = sortedData.map((item) => ({
-    month: moment(item?.date).format("Do MMM"),
-    amount: item?.amount,
-    category: item?.category,
-  }));
+  transactions.forEach((item) => {
+    const date = moment(item.date).format("DD MMM YYYY");
 
-  return chartData;
+    if (!groupedData[date]) {
+      groupedData[date] = 0;
+    }
+
+    groupedData[date] += Number(item.amount) || 0;
+  });
+
+  return Object.entries(groupedData)
+    .map(([date, amount]) => ({
+      date,
+      amount,
+    }))
+    .sort(
+      (a, b) =>
+        moment(a.date, "DD MMM YYYY").valueOf() -
+        moment(b.date, "DD MMM YYYY").valueOf(),
+    );
 };
