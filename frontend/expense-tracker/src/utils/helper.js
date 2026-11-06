@@ -1,3 +1,4 @@
+
 import moment from "moment";
 
 export const validateEmail = (email) => {
@@ -39,10 +40,14 @@ export const prepareExpenseBarChartData = (data = []) => {
   return chartData;
 };
 
+// Income Bar Chart - Current Year Only
 export const prepareIncomeBarChartData = (transactions = []) => {
+  const currentYear = moment().year();
   const groupedData = {};
 
   transactions.forEach((item) => {
+    if (moment(item.date).year() !== currentYear) return;
+
     const date = moment(item.date).format("DD MMM YYYY");
 
     if (!groupedData[date]) {
@@ -60,14 +65,18 @@ export const prepareIncomeBarChartData = (transactions = []) => {
     .sort(
       (a, b) =>
         moment(a.date, "DD MMM YYYY").valueOf() -
-        moment(b.date, "DD MMM YYYY").valueOf(),
+        moment(b.date, "DD MMM YYYY").valueOf()
     );
 };
 
+// Expense Line Chart - Current Year Only
 export const prepareExpenseLineChartData = (transactions = []) => {
+  const currentYear = moment().year();
   const groupedData = {};
 
   transactions.forEach((item) => {
+    if (moment(item.date).year() !== currentYear) return;
+
     const date = moment(item.date).format("DD MMM YYYY");
 
     if (!groupedData[date]) {
@@ -85,6 +94,6 @@ export const prepareExpenseLineChartData = (transactions = []) => {
     .sort(
       (a, b) =>
         moment(a.date, "DD MMM YYYY").valueOf() -
-        moment(b.date, "DD MMM YYYY").valueOf(),
+        moment(b.date, "DD MMM YYYY").valueOf()
     );
 };
